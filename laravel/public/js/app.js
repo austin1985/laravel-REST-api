@@ -1903,6 +1903,16 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 /* harmony default export */ __webpack_exports__["default"] = ({
   data: function data() {
     return {
@@ -1944,6 +1954,68 @@ __webpack_require__.r(__webpack_exports__);
         prev_page_url: links.prev
       };
       this.pagination = pagination;
+    },
+    deleteArticle: function deleteArticle(id) {
+      var _this2 = this;
+
+      if (confirm('Are you sure?')) {
+        fetch("api/articles/".concat(id), {
+          method: "delete"
+        }).then(function (res) {
+          return res.json();
+        }).then(function (data) {
+          alert('Article removed');
+
+          _this2.fetchArticles();
+        });
+      }
+    },
+    addArticle: function addArticle() {
+      var _this3 = this;
+
+      if (this.edit == false) {
+        //add
+        fetch('api/articles', {
+          method: 'post',
+          body: JSON.stringify(this.article),
+          headers: {
+            'content-type': 'application/json'
+          }
+        }).then(function (res) {
+          return res.json();
+        }).then(function (data) {
+          _this3.article.title = '';
+          _this3.article.body = '';
+          alert('Article Added');
+
+          _this3.fetchArticles();
+        });
+      } else {
+        //update
+        //add
+        fetch('api/articles', {
+          method: 'put',
+          body: JSON.stringify(this.article),
+          headers: {
+            'content-type': 'application/json'
+          }
+        }).then(function (res) {
+          return res.json();
+        }).then(function (data) {
+          _this3.article.title = '';
+          _this3.article.body = '';
+          alert('Article Updated');
+
+          _this3.fetchArticles();
+        });
+      }
+    },
+    editArticle: function editArticle(article) {
+      this.edit = true;
+      this.article.id = article.id;
+      this.article.article_id = article.id;
+      this.article.title = article.title;
+      this.article.body = article.body;
     }
   }
 });
@@ -37222,6 +37294,75 @@ var render = function() {
     [
       _c("h2", [_vm._v("Articles")]),
       _vm._v(" "),
+      _c(
+        "form",
+        {
+          staticClass: "mb-3",
+          on: {
+            submit: function($event) {
+              $event.preventDefault()
+              return _vm.addArticle()
+            }
+          }
+        },
+        [
+          _c("div", { staticClass: "form-group" }, [
+            _c("input", {
+              directives: [
+                {
+                  name: "model",
+                  rawName: "v-model",
+                  value: _vm.article.title,
+                  expression: "article.title"
+                }
+              ],
+              staticClass: "form-control mb-2",
+              attrs: { type: "text", placeholder: "Title" },
+              domProps: { value: _vm.article.title },
+              on: {
+                input: function($event) {
+                  if ($event.target.composing) {
+                    return
+                  }
+                  _vm.$set(_vm.article, "title", $event.target.value)
+                }
+              }
+            }),
+            _vm._v(" "),
+            _c("textarea", {
+              directives: [
+                {
+                  name: "model",
+                  rawName: "v-model",
+                  value: _vm.article.body,
+                  expression: "article.body"
+                }
+              ],
+              staticClass: "form-control mb-2",
+              attrs: { placeholder: "Title" },
+              domProps: { value: _vm.article.body },
+              on: {
+                input: function($event) {
+                  if ($event.target.composing) {
+                    return
+                  }
+                  _vm.$set(_vm.article, "body", $event.target.value)
+                }
+              }
+            }),
+            _vm._v(" "),
+            _c(
+              "button",
+              {
+                staticClass: "btn btn-light btn-block",
+                attrs: { type: "submit" }
+              },
+              [_vm._v("Save")]
+            )
+          ])
+        ]
+      ),
+      _vm._v(" "),
       _c("nav", { attrs: { "aria-label": "Page navigation example" } }, [
         _c("ul", { staticClass: "pagination" }, [
           _c(
@@ -37295,7 +37436,35 @@ var render = function() {
           [
             _c("h3", [_vm._v(_vm._s(article.title))]),
             _vm._v(" "),
-            _c("p", [_vm._v(_vm._s(article.body))])
+            _c("p", [_vm._v(_vm._s(article.body))]),
+            _vm._v(" "),
+            _c("hr"),
+            _vm._v(" "),
+            _c(
+              "button",
+              {
+                staticClass: "btn btn-warning mb-2",
+                on: {
+                  click: function($event) {
+                    return _vm.editArticle(article)
+                  }
+                }
+              },
+              [_vm._v("Edit")]
+            ),
+            _vm._v(" "),
+            _c(
+              "button",
+              {
+                staticClass: "btn btn-danger",
+                on: {
+                  click: function($event) {
+                    return _vm.deleteArticle(article.id)
+                  }
+                }
+              },
+              [_vm._v("Delete")]
+            )
           ]
         )
       })
@@ -49724,8 +49893,8 @@ __webpack_require__.r(__webpack_exports__);
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
-__webpack_require__(/*! /var/www/resources/js/app.js */"./resources/js/app.js");
-module.exports = __webpack_require__(/*! /var/www/resources/sass/app.scss */"./resources/sass/app.scss");
+__webpack_require__(/*! /home/mibalogh/Development/git/laravel-REST-api/laravel/resources/js/app.js */"./resources/js/app.js");
+module.exports = __webpack_require__(/*! /home/mibalogh/Development/git/laravel-REST-api/laravel/resources/sass/app.scss */"./resources/sass/app.scss");
 
 
 /***/ })
